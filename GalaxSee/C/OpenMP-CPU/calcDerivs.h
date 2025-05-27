@@ -15,7 +15,7 @@
  */
 
 #include "nbody.h"
-#include <mpi.h>
+#include <omp.h>
 
 #ifndef CALCDERIVS
 #define CALCDERIVS

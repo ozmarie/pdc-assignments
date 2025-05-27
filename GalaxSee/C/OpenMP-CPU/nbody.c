@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "nbody.h"
-#include <mpi.h>
 #include <X11/Xlib.h>
 #include <assert.h>
 #include <unistd.h>

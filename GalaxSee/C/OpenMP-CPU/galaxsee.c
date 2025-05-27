@@ -22,7 +22,6 @@
 #include "stepModel.h"
 #include "graphics.h"
 #include <time.h>
-#include <mpi.h>
 
 // Sets up the N-body model with default settings and initial conditions.
 void setupModel(NbodyModel *theModel, int num_bodies, double rotation_factor, double initial_v);
@@ -30,8 +29,8 @@ void setupModel(NbodyModel *theModel, int num_bodies, double rotation_factor, do
 int main(int argc, char **argv) {
     NbodyModel *theModel = NULL; // Pointer to the N-body model
     int num_bodies = 500;        // Default number of bodies in the simulation
-    double tStep = 1.0;          // Time step for each simulation iteration (1.0 by default)
-    double tFinal = 5000.0;      // Final simulation time (1000.0 by default)
+    double tStep = 8.0;          // Time step for each simulation iteration (1.0 by default)
+    double tFinal = 20000.0;      // Final simulation time (1000.0 by default)
     int count_updates = 0;       // Counter for simulation updates
     int skip_updates = 1;        // Controls how often the display updates
     int show_display = 1;        // Flag to control whether to show the display

@@ -40,9 +40,6 @@ int main(int argc, char **argv) {
     // Command line argument parsing
     printf("USAGE: program_name num_bodies t_final rotation_factor initial_v show_display\n");
     int i = 0;
-    // if the user entered an argument for the number of threads,
-    // set num threads to argument #1. Otherwise, set it to 1.
-    omp_set_num_threads(argc > ++i ? atoi(argv[i]) : 1);
     if (argc > ++i) {
         sscanf(argv[i], "%d", &num_bodies);
     }

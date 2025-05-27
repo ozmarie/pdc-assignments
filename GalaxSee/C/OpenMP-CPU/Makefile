@@ -1,15 +1,8 @@
-# CC            = gcc
-CC            = mpicc
-#CFLAGS	      = -Wall -ggdb
-#CFLAGS	      = 
-# CFLAGS	      = -Wall -DHAS_LIBGD -DHAS_X11 -DHAS_MPI
-CFLAGS	      = -Wall -DHAS_X11 -DHAS_MPI
-# CFLAGS	      = -Wall -DHAS_X11
-#CFLAGS	      = -Wall -DHAS_MPI -g
+CC            = gcc
+CFLAGS	      = -Wall -fopenmp
 LDFLAGS	      = -o 
-LIBS          = -lm -lX11
+LIBS          = -lm -lX11 -fopenmp
 #LIBS          = -lm -ljpeg -lpng -lz -lgd -lmpich
-#LIBS          = -lm 
 
 OBJS	      = nbody.o\
 			stepModel.o\
