@@ -1,5 +1,5 @@
 /**
- * @file galaxsee.cpp
+ * @file galaxsee.cu
  * @brief Includes the main function for running the N-body simulation
  *
  * This file includes a main function that:
@@ -18,10 +18,9 @@
  *          Keep in mind that there may be errors and the documentation may not be 100% accurate.
  */
 
-#include "Simulator.hpp"
-#include "graphics.hpp"
+#include "Simulator.cuh"
+#include "graphics.cuh"
 #include <time.h>
-#include <omp.h>
 
 int main(int argc, char **argv) {
     int num_bodies = 500;        // Default number of bodies in the simulation

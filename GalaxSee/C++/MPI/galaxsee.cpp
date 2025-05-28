@@ -21,7 +21,11 @@
 #include "Simulator.hpp"
 #include "graphics.hpp"
 #include <time.h>
-#include <omp.h>
+
+// MPI Variables. Made available for extern use.
+MPI_Status status;
+int rank;
+int size;
 
 int main(int argc, char **argv) {
     int num_bodies = 500;        // Default number of bodies in the simulation

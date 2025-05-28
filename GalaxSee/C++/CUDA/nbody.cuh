@@ -1,5 +1,5 @@
 /**
- * @file nbody.hpp
+ * @file nbody.cuh
  * @brief Defines the NbodyModel structure and functions for simulating an N-body gravitational system.
  *
  * This header file provides the definition of the `NbodyModel` structure, which is used to represent
@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <omp.h>
 
 #define PI 3.14159
 

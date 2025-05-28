@@ -23,9 +23,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <thread>        // C++11 concurrency
 #include <omp.h>
 
 #define PI 3.14159
+
+using namespace std;
 
 class NbodyModel
 {

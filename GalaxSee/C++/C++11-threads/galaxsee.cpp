@@ -21,7 +21,6 @@
 #include "Simulator.hpp"
 #include "graphics.hpp"
 #include <time.h>
-#include <omp.h>
 
 int main(int argc, char **argv) {
     int num_bodies = 500;        // Default number of bodies in the simulation
