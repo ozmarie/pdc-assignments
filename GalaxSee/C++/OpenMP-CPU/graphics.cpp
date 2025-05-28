@@ -66,7 +66,7 @@ void setupWindow(int IMAGE_WIDTH, int IMAGE_HEIGHT)
     // Create grayscale colors
     for (i = 0; i < numXGrayscale_x11; ++i)
     {
-        color = (int)((double)i * 35535.0 / (double)numXGrayscale_x11) + 30000;
+        color = (int)((double)i * 35535.0 / (double)(numXGrayscale_x11 - 1)) + 30000;
         XGrayscale_x11[i].red = color;
         XGrayscale_x11[i].green = color;
         XGrayscale_x11[i].blue = color;
@@ -98,7 +98,7 @@ void setupWindow(int IMAGE_WIDTH, int IMAGE_HEIGHT)
  */
 void make_image(NbodyModel *theModel)
 {
-    unsigned i;
+    int i;
     double scale, shift;
     int dispX, dispY, dispZ, depthY, depthZ;
 
@@ -122,6 +122,7 @@ void make_image(NbodyModel *theModel)
 
         depthZ = (int)((double)dispZ / (double)height_x11 * numXGrayscale_x11);
         depthZ = depthZ < 0 ? 0 : (depthZ >= numXGrayscale_x11 ? numXGrayscale_x11 - 1 : depthZ);
+
 
         if (dispX < width_x11 / 2)
         {
@@ -148,7 +149,7 @@ void make_image(NbodyModel *theModel)
  * This function checks if the X11 window has been created, and if not, it sets it up. 
  * It then calls `make_image` to render the current state of the model.
  * 
- * @param theModel A pointer to the NbodyModel object containing the current state of the system.
+ * @param theModel A pointer to the NbodyModel structure containing the current state of the system.
  * @return int Returns 1 on success.
  */
 int updateNbodyModel(NbodyModel *theModel)

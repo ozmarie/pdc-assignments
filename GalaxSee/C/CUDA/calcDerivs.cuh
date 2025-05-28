@@ -21,10 +21,8 @@
 #ifndef CALCDERIVS
 #define CALCDERIVS
 
-__host__ void calcDerivs(double *x, double *derivs, double t, double tStep,
+void calcDerivs(double *x, double *derivs, double t, double tStep,
                 NbodyModel *theModel);
-__global__ void calcDerivsDevice(NbodyModel* theModel, 
-                double *x, double *derivs, double tStep);
-__device__ double computeSoftenedRadius(double g_m, double tstep);
+double computeSoftenedRadius(double g_m, double tstep);
 
 #endif

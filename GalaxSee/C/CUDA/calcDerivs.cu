@@ -42,13 +42,11 @@ __host__ void checkErr(cudaError_t err, const char *msg)
  * @param theModel Pointer to the NbodyModel structure containing the system's physical parameters 
  *                 (e.g., masses, gravitational constant).
  */
-__host__ void calcDerivs(double *x, double *derivs, double t, double tStep,
+void calcDerivs(double *x, double *derivs, double t, double tStep,
                 NbodyModel *theModel)
 {
-    int num_bodies = theModel->num_bodies;
-    size_t acceleration_array_size = num_bodies * 6 * sizeof(double);
     // Loop over each body in the system
-    for (int i = 0; i < num_bodies; ++i)
+    for (int i = 0; i < theModel->num_bodies; i++)
     {
         // Set the derivatives of position to the current velocities
         derivs[i * 6 + 0] = x[i * 6 + 3]; // dx/dt = vx
@@ -59,81 +57,9 @@ __host__ void calcDerivs(double *x, double *derivs, double t, double tStep,
         derivs[i * 6 + 4] = 0.0;
         derivs[i * 6 + 5] = 0.0;
     }
-
-    // definitions for the kernel
-    int kernelBlockDim = 256;
-    // one thread for each set of operations within a nested loop 
-    // (technically (num_bodies*(num_bodies-1)) / 2, but including extra threads (bodies*bodies-1) makes kernel logic simpler)
-    double sumOfIntegers = (num_bodies * (num_bodies-1));
-    int kernelGridDim = ceil(sumOfIntegers / kernelBlockDim);
-
-    cudaError_t err;
-
-    // manage device memory
-    // ~ manual management
-    // allocate space on the device
-    NbodyModel *d_model = NULL;
-    err = cudaMalloc((void **)&d_model, sizeof(NbodyModel));
-    checkErr(err, "Unable to allocate NbodyModel d_model on the device");
-    // allocate space for the "mass" array as well
-    double *d_model_mass = NULL;
-    err = cudaMalloc((void **)&d_model_mass, num_bodies * sizeof(double));
-    checkErr(err, "Unable to allocate array d_model->mass on the device");
-
-    double *device_x = NULL;
-    err = cudaMalloc(&device_x, acceleration_array_size);
-    checkErr(err, "Unable to allocate array device_x on the device");
-    double *d_derivs = NULL;
-    err = cudaMalloc(&d_derivs, acceleration_array_size);
-    checkErr(err, "Unable to allocate array d_derivs on the device");
-
-    // copy data to the device
-    err = cudaMemcpy(d_model, theModel, sizeof(NbodyModel), cudaMemcpyHostToDevice);
-    checkErr(err, "Unable to copy theModel from host to device");
-    err = cudaMemcpy(d_model_mass, (*theModel).mass, num_bodies * sizeof(double), cudaMemcpyHostToDevice);
-    checkErr(err, "Unable to copy theModel.mass from host to device");
-    err = cudaMemcpy(&(d_model->mass), &d_model_mass, sizeof(double*), cudaMemcpyHostToDevice);
-    checkErr(err, "Unable to copy theModel pointer to 'mass' from host to device");
-
-    err = cudaMemcpy(device_x, x, acceleration_array_size, cudaMemcpyHostToDevice);
-    checkErr(err, "Unable to copy array x from host to device");
-    err = cudaMemcpy(d_derivs, derivs, acceleration_array_size, cudaMemcpyHostToDevice);
-    checkErr(err, "Unable to copy array derivs from host to device");
-
-    // call kernel
-    // offload computations to calculate gravitational interactions
-    calcDerivsDevice<<<kernelGridDim, kernelBlockDim>>>(d_model, device_x, d_derivs, tStep);
-    err = cudaGetLastError();
-    checkErr(err, "Unable to launch calcDerivsDevice kernel");
-    cudaDeviceSynchronize();
-
-    // copy data from device to host
-    err = cudaMemcpy(derivs, d_derivs, acceleration_array_size, cudaMemcpyDeviceToHost);
-    checkErr(err, "Unable to copy array derivs from device to host");
-
-    cudaFree(d_model_mass);
-    cudaFree(d_model);
-    cudaFree(device_x);
-    cudaFree(d_derivs);
-}
-
-/** 
- * @brief Perform the main derivative calculations on the device
-*/
-__global__ void calcDerivsDevice(NbodyModel* theModel, double *x, 
-                                double *derivs, double tStep)
-{
-    int numBodies = theModel->num_bodies;
-    // Calculate bounds of the array
-    unsigned id = blockIdx.x * blockDim.x + threadIdx.x; // global id
-    // if the current thread falls within the range of iterations being done for the nested "loop"
-    if (id <= numBodies * (numBodies-1)) {
-        unsigned i = id % numBodies;
-
-        // start with the first body after the "i" (the current body)
-        unsigned j = i + (id / numBodies);
-
-        if (j < numBodies)
+    for (int i = 0; i < theModel->num_bodies; ++i) {
+        // Loop over all other bodies (j > i) to calculate gravitational interactions
+        for (int j = i + 1; j < theModel->num_bodies; j++)
         {
             // Compute the softened radius for gravitational force calculation
             double srad = computeSoftenedRadius(theModel->G * theModel->mass[j], tStep);
@@ -156,14 +82,14 @@ __global__ void calcDerivsDevice(NbodyModel* theModel, double *x,
                     double grav_effect = theModel->G * inv_rad3;
 
                     // Update the acceleration components due to body j
-                    // Use atomic to avoid write conflicts. To use this function, ensure that "NVIDIA_COMPUTE" is assigned the correct values in the Makefile
-                    atomicAdd(&derivs[i*6+3], grav_effect * theModel->mass[j]);
-                    atomicAdd(&derivs[i*6+4], grav_effect * theModel->mass[j]);
-                    atomicAdd(&derivs[i*6+5], grav_effect * theModel->mass[j]);
+                    derivs[i * 6 + 3] += grav_effect * theModel->mass[j];
+                    derivs[i * 6 + 4] += grav_effect * theModel->mass[j];
+                    derivs[i * 6 + 5] += grav_effect * theModel->mass[j];
 
-                    atomicAdd(&derivs[j*6+3], grav_effect * theModel->mass[i] * -1);
-                    atomicAdd(&derivs[j*6+4], grav_effect * theModel->mass[i] * -1);
-                    atomicAdd(&derivs[j*6+5], grav_effect * theModel->mass[i] * -1);
+                    // Apply Newton's third law to update the acceleration of body j
+                    derivs[j * 6 + 3] -= grav_effect * theModel->mass[i];
+                    derivs[j * 6 + 4] -= grav_effect * theModel->mass[i];
+                    derivs[j * 6 + 5] -= grav_effect * theModel->mass[i];
                 }
             }
         }
@@ -181,7 +107,7 @@ __global__ void calcDerivsDevice(NbodyModel* theModel, double *x,
  * @param tstep Time step of the simulation.
  * @return double The computed softened radius.
  */
-__device__ double computeSoftenedRadius(double g_m, double tstep)
+double computeSoftenedRadius(double g_m, double tstep)
 {
     // g_m = G * mass;
     return 5.0 * pow(g_m, 0.333) * pow(tstep, 0.667);
