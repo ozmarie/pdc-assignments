@@ -8,7 +8,7 @@
  * various operations on the model like spinning and speeding up the bodies.
  *
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, August 2024

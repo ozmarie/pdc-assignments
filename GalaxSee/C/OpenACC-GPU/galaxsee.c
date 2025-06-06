@@ -9,7 +9,7 @@
  * - Outputs the results
  *
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, August 2024

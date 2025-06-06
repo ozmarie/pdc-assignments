@@ -7,7 +7,7 @@
  * different integration methods that the simulation can use.
  *
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, January 2025

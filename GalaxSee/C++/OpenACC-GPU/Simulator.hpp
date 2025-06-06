@@ -4,7 +4,7 @@
  * and running the Nbody simulation.
  * 
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, January 2025

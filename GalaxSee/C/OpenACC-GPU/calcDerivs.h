@@ -5,7 +5,7 @@
  *  softened gravitational radius is also included in this header file.
  *
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, August 2024

@@ -6,7 +6,7 @@
  * updating the window based on the simulation's current state.
  *
  * Project originally by:
- * [Original Author Name]
+ * David Joiner
  *
  * Modified by:
  * Steven McKelvey - Calvin University, January 2025
