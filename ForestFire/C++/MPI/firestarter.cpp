@@ -29,9 +29,9 @@ int main(int argc, char **argv)
     processCommandLine(argc, argv, forest_size, n_trials, n_probs, do_display);
 
     // setup problem
-    double *prob_spread = new double[n_probs];
-    double *percent_burned = new double[n_probs];
-    double *iterations_spread = new double[n_probs];
+    double *prob_spread = new double[n_probs]();
+    double *percent_burned = new double[n_probs]();
+    double *iterations_spread = new double[n_probs]();
 
     double prob_step = (prob_max-prob_min)/(double)(n_probs-1);
     printf("Probability of fire spreading, Average percent burned, Iterations\n");

@@ -39,9 +39,9 @@ int main(int argc, char **argv)
 
     // setup problem
     // must be defined using malloc (not "new") in order to be properly sent to the device and later freed.
-    double *prob_spread = (double *)malloc(n_probs * sizeof(double));
-    double *percent_burned = (double *)malloc(n_probs * sizeof(double));
-    double *iterations_spread = (double *)malloc(n_probs * sizeof(double));
+    double *prob_spread = (double *)calloc(n_probs, sizeof(double));
+    double *percent_burned = (double *)calloc(n_probs, sizeof(double));
+    double *iterations_spread = (double *)calloc(n_probs, sizeof(double));
 
     double prob_step = (prob_max-prob_min)/(double)(n_probs-1);
     printf("Probability of fire spreading, Average percent burned, Iterations\n");
