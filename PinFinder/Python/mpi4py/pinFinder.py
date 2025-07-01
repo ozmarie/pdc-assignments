@@ -6,6 +6,9 @@ Uses the mpi4py package for MPI support.
 Adapted for CSinParallel.org by Steven McKelvey, Calvin University. 
 Adapted from the pinFinder.c solution created by Joel Adams, Calvin University.
 
+Note: MPI init/finalize are handled by the library and do not need to be explicitly called
+    (according to https://mpi4py.readthedocs.io/en/4.0.3/overview.html, Environmental Management section)
+
 Usage: mpiexec -n <num_processes> python3 pinFinder.py <pin-hash>
 '''
 import sys # command line arguments
