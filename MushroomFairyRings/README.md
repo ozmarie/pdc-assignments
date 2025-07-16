@@ -50,7 +50,7 @@ Fungi are organisms that produce spores as their mechanism of reproduction: each
 
 ### How do we model it computationally?
 
-The basic principle behind creating a computational model for this phenomenon is the same as that for a cellular automata such as the famous Conway's game of Life. We model the ground as a 2D grid of cells (a **structured grid**) that contain spores. We examine each cell during several iterations that mimic the marching of time. The cells have values based on the state of the mushroom at the time of the iteration (how much time each iteration represents is not important). In the classic game of life by mathematician John Conway, cells have 2 states: alive or dead. In this simulation, cells have more states, which we will give these values (from [^1]):
+The basic principle behind creating a computational model for this phenomenon is the same as that for a cellular automata such as the famous Conway's game of Life. We model the ground as a 2D grid of cells (a **structured grid**) that initially contain spores. We examine each cell during several iterations that mimic the marching of time. The cells have values based on the state of the mushroom at the time of the iteration (how much time each iteration represents is not important). In the classic game of life by mathematician John Conway, cells have 2 states: alive or dead. In this simulation, cells have more states, which we will give these values (from [^1]):
 
 | **name**  | **value** | **description**                                 |
 | --------- | --------- | ----------------------------------------------- |
@@ -65,7 +65,7 @@ The basic principle behind creating a computational model for this phenomenon is
 | DEAD2     | 8         | Hyphae that have been dead for a while          |
 | INERT     | 9         | Area where plants cannot grow                   |
 
-Like the classic Game of Life, the eight cells around a cell, called the *neighborhood*, are examined to determine  whether an EMPTY cell could become a SPORE because a neighboring cell is a spore. Use of this neighborhood of cells is called a **stencil pattern**. Cells going from SPORE to YOUNG to MATURING and so on through the states are determined by other rules. The difference between this mushroom fairy ring model and the game of life is that *we introduce probabilities for the chance of a cell to go from one sate to another in some cases*.
+Like the classic Game of Life, the eight cells around a cell, called the *neighborhood*, are examined to determine  whether an EMPTY cell could become a SPORE because a neighboring cell is a spore. Use of this neighborhood of cells is called a **stencil pattern**. Cells going from SPORE to YOUNG to MATURING and so on through the states are determined by other rules. The difference between this mushroom fairy ring model and the game of life is that *we introduce probabilities for the chance of a cell to go from one state to another in some cases*.
 
 We use 2 grids of cells, one to represent the current state, and one to represent the next state after applying the rules during an iteration. The original grid is initialized to some state (details below). After the new grid values are computed, the the new grid is copied to the original grid for the next iteration, and the rules are applied again. This use of 2 grids during this type of simulation is quite common and is called **double buffering**. Here are the rules that are applied at each iteration (see the apply_rules.cpp file for implementation):
 
@@ -223,7 +223,7 @@ If you have access to a linux machine with gnuplot installed, you can try adding
 ./cpprand_mushroom_seq -i 22 -w 30 -l 30 -c -d -a
 ```
 
-In this case, a more discernible ring is forming- this 30 x 30 cell grid is about the smallest to demonstrate  the real situation. Without the -a flag, you can still observe the output in the file called final.dat to see that many cells have become inert in the center and cells are at various life stages around the edges, with initial 'green' empty ground around the outside. Here is what the graphical output  at the final iteration typically looks like for this case:
+In this case, a more discernible ring is forming- this 30 x 30 cell grid is about the smallest to demonstrate  the real situation. Without the -a flag, you can still observe the output in the file called final.dat to see that many cells have become inert in the center and cells are at various life stages around the edges, with initial 'green' empty ground around the outside. Here is what the graphical output at the final iteration typically looks like for this case:
 ![[30x30_iteration_21.png]]
 
 You can change the command line arguments to use -g instead of -a and only the final result will be displayed in a gnuplot window like the above.
