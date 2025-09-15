@@ -256,7 +256,7 @@ gprof -p ./cpprand_mushroom_seq_prof gmon.out >profile.txt
 python3 ./trimFileLines.py 
 ```
 			
-Note that it tells you that the results were saved into a file called `trimmed_profile.txt`. Open that to observe the results. The column on the left shows the percentage of overall time was spent in each of the functions listed on the right. Any function beginning in std:: indicates one from the C++ random library.  Note that although the functions `clcNewGrid` and initGrid appear lower on the list, each of them uses the C++ random library, so they also use quite a bit of the overall time, as seen in the column labeled "total ms/call".
+Note that it tells you that the results were saved into a file called `trimmed_profile.txt`. Open that to observe the results. The column on the left shows the percentage of overall time was spent in each of the functions listed on the right. Any function beginning in std:: indicates one from the C++ random library.  Note that although the functions `calcNewGrid` and `initGrid` appear lower on the list, each of them uses the C++ random library, so they also use quite a bit of the overall time, as seen in the column labeled "total ms/call".
 
 The function called `apply_rules` is in the file called mushroom_rules.cpp. It's important to recognize that this code was written so that this function is designed to work on one cell and is therefore **not a candidate for parallelizing**. The function that uses `apply_rules`, however, is called `calcNewGrid` and is one that you can work on, because it loops through every cell in the grid. Which others are candidates for parallelizing with OpenMP pragmas?
 
