@@ -92,7 +92,7 @@ This code is an example of parallel structured grid **computational pattern** us
 The sequential versions of this code work- don't touch them, rather use them as the working version that you can use to verify that your parallel version is behaving properly. There are several versions of the sequential code that you can make. Each is designed to use a single OpenMP thread and varies by the random number generation library that you have available.
 
 - one for standard C++ random library
-- one for the C++  trng library
+- one for the C++ trng library
 
 As we will see below, the trng library creates a true stream of random numbers over each iteration of the simulation, so that with a given constant seed, the results are repeatable. This is not the case for the standard C++ random library, though in some cases it likely creates reasonable simulations overall, just not ones we can replicate over multiple iterations using a particular starting seed.
 
@@ -292,7 +292,7 @@ For weak scalability in particular, you need to consider the problem size in the
 
 ### Assignment
 
-Ultimately you will write a report about your work to paralleize this code and your findings from running experiments. Do the following to get you to this goal:
+Ultimately you will write a report about your work to parallelize this code and your findings from running experiments. Do the following to get you to this goal:
 
 - Conduct the profiling of the sequential version as described above and report on which function use time and also can be sped up with the use of multiple threads.
 - Create an OpenMP version
@@ -312,6 +312,7 @@ Ultimately you will write a report about your work to paralleize this code and y
 	- Describe experiments that you ran and why
 	- Show graphs of results
 	- Summarize when the program exhibits strong and weak scalability and when it does not
+
 ### Report Criteria
 You will write a report that resembles a document that you would write to a supervisor or a colleague who is interested in the performance of the code changes that you have made. You can imagine yourself as someone reasonably unfamiliar with the problem and hasn't seen the code before but has access to it, along with your report.
 
@@ -337,6 +338,7 @@ You will write a report that resembles a document that you would write to a supe
 Note that the report should have sections with headers so that each part of what you are reporting is obvious to the reader (they should not simply be named exactly like the bullet points above- think about how you want to organize your work).
 
 When writing the explanation of your results, address at what conditions the program exhibits strong scalability and weak scalability, backing your assertions up with references to your experimental results.
+
 ### For a challenge
 
 This version simulates iterations that represent long stretches of time- the rings form within 20 - 40 iterations in most cases. Study how the rules are applied to determine if the overall simulation could act like smaller time steps between changes from one stage to another. 
