@@ -210,7 +210,7 @@ What you should see from this above example is that after 4 iterations some cell
 
 		Total: 17
 
-The initial state of the grid is saved in a file called `initial.dat` and the final state of the grid is saved in `final.dat`. Look at those file to see that they match what was printed out. Now you can try a slightly bigger example and increase the number of iterations several times- you should observe the `final.dat` file each time you run the following to see how more cells eventually become inert and a somewhat sloppy partial 'ring' of cells at various stages is around the outside of the grid.
+The initial state of the grid is saved in a file called `initial.dat` and the final state of the grid is saved in `final.dat`. Look at those files to see that they match what was printed out. Now you can try a slightly bigger example and increase the number of iterations several times- you should observe the `final.dat` file each time you run the following to see how more cells eventually become inert and a somewhat sloppy partial 'ring' of cells at various stages is around the outside of the grid.
 ```
  ./cpprand_mushroom_seq -i 5 -w 12 -l 12 -c -d
  ./cpprand_mushroom_seq -i 10 -w 12 -l 12 -c -d
@@ -233,7 +233,7 @@ You can try the same example with a larger grid to see this same pattern with a 
 ./cpprand_mushroom_seq -i 22 -w 300 -l 300 -c -d -g
 ```
 
-These are all ways to verify that the use of the random number generator to apply the probablistic rules will produce the same result when the seed is a constant value. Now let's try this same concept, but instead of a single ring forming, let's look at the case when several spores are initialized randomly throughout the grid. To do this we remove the -c option, like this:
+These are ways to verify that the use of the random number generator to apply the probabilistic rules will produce the same result when the seed is a constant value. Now let's try this same concept, but instead of a single ring forming, let's look at the case when several spores are initialized randomly throughout the grid. To do this we remove the -c option, like this:
 ```
 ./cpprand_mushroom_seq -i 22 -w 300 -l 300 -d -g
 ```
@@ -246,6 +246,8 @@ If you have gnuplot installed on your machine, you can also make a series of png
 cat *.png | ffmpeg -framerate 2 -f image2pipe -i - -c:v libx264 -crf 20 300x300_output.mp4
 ```
 There are other ways to do this conversion, including Quicktime on a Mac or Canva online.
+
+If you just want to see what it looks like for now, the movie file is in the folder called docs_images and named 300x300_output.mp4.
 
 ### Next step: profile the sequential version
 
@@ -294,7 +296,7 @@ For weak scalability in particular, you need to consider the problem size in the
 
 Ultimately you will write a report about your work to parallelize this code and your findings from running experiments. Do the following to get you to this goal:
 
-- Conduct the profiling of the sequential version as described above and report on which function use time and also can be sped up with the use of multiple threads.
+- Conduct the profiling of the sequential version as described above and report on which function uses time and also can be sped up with the use of multiple threads.
 - Create an OpenMP version
 	- Pay attention to the Main() function to be certain that you are setting the number of threads sent in at the command line- there is an important update needed to the code.
 	- Test it for accuracy before you move forward (work on one function at a time and test before moving on, using multiple threads).
@@ -317,7 +319,7 @@ Ultimately you will write a report about your work to parallelize this code and 
 You will write a report that resembles a document that you would write to a supervisor or a colleague who is interested in the performance of the code changes that you have made. You can imagine yourself as someone reasonably unfamiliar with the problem and hasn't seen the code before but has access to it, along with your report.
 
 -   A title
-- Your name (own your work!)
+-   Your name (own your work!)
 -   Well-written prose explaining:
     
       1.  Updates to the code sections to enable parallelism and why you chose them.
