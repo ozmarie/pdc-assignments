@@ -8,14 +8,19 @@ import time # timing functions
 from FireSimulator import FireSimulator
 import matplotlib.pyplot as plt
 import math
-# from mpi4py import MPI
+from mpi4py import MPI
 import numpy as np
 
 def main():
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
     forest_size = 20
     prob_min = 0.0
     prob_max = 1.0
-    n_trials = 5000
+    n_trials = 51
     n_probs = 101
     do_display = 1
 
@@ -45,6 +50,8 @@ def main():
 
     # for a number of trials, calculate average percent burn
     for i_trial in range(n_trials):
+        if i_trial % 10 == 0:
+          print("Trial group " + str(int(i_trial/10)) + ". Ramk: " + str(rank) + ". Time: " + str(time.time() - startTime))
         # Version of the loop that prints results in real time
         for i_prob in range(n_probs):
             # burn until fire is gone
